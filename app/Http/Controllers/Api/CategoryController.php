@@ -6,39 +6,39 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
-public function index()
+    public function index()
     {
-        $categorys = Categorys::get();
-        if($categorys->count() > 0){
-                return CategoryResource::collection($categorys)
-                    ->additional([
-                        'message' => 'Categorys retrieved successfully',
-                    ]);
-        }else{
+        $categories = Category::get(); 
+        if ($categories->count() > 0) {
+            return CategoryResource::collection($categories)
+                ->additional([
+                    'message' => 'Categories retrieved successfully',
+                ]);
+        } else {
             return response()->json([
-                'message' => 'No Categorys found',
+                'message' => 'No Categories found',
             ], 200);
         }
     }
-    public function show(Category $Category)
+
+    public function show(Category $category)
     {
-        return new CategoryResource($Category);
-        // Logic to retrieve and return a single Category by ID
-        // return response()->json(['message' => 'Category retrieved successfully', 'data' => new CategoryResource($Category)], 200);
+        return new CategoryResource($category);
     }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'All Fields are required',
+                'message' => 'Validation failed',
                 'errors' => $validator->messages(),
             ], 422);
         }
@@ -46,12 +46,14 @@ public function index()
         $category = Category::create([
             'name' => $request->name,
         ]);
+
         return response()->json([
             'message' => 'Category created successfully',
-            'data'=> new CategoryResource($Category)
-        ], 200);
+            'data' => new CategoryResource($category),
+        ], 201);
     }
-    public function update(Request $request ,Category $category)
+
+    public function update(Request $request, Category $category)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -59,21 +61,25 @@ public function index()
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'All Fields are required',
+                'message' => 'Validation failed',
                 'errors' => $validator->messages(),
             ], 422);
         }
+
         $category->update([
             'name' => $request->name,
         ]);
+
         return response()->json([
             'message' => 'Category updated successfully',
-            'data'=> new CategoryResource($category)
+            'data' => new CategoryResource($category),
         ], 200);
     }
+
     public function destroy(Category $category)
     {
         $category->delete();
+
         return response()->json([
             'message' => 'Category deleted successfully',
         ], 200);

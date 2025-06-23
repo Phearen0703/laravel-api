@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Category extends Model
 {
-    Use HasFactory;
-   protected $table = 'categorys';
+     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $fillable = ['name'];
+
 
 }

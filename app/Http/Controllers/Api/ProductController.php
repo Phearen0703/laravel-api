@@ -36,6 +36,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'category_id'=> 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
@@ -49,6 +50,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'category_id' => $request->category_id,
         ]);
         return response()->json([
             'message' => 'Product created successfully',
@@ -61,6 +63,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'category_id'=> 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
@@ -73,6 +76,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'category_id' => $request->category_id,
         ]);
         return response()->json([
             'message' => 'Product updated successfully',
